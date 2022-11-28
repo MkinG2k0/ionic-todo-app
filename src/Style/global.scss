@@ -1,0 +1,17 @@
+@use '../Style/mix';
+
+
+*::-webkit-scrollbar {
+	width: 10px; /* ширина scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent; /* цвет дорожки */
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: #bbbbbf; /* цвет плашки */
+	//border-top: 0.4rem solid color.$color-gray;
+	//border-bottom: 0.4rem solid color.$color-gray;
+}
+

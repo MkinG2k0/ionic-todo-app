@@ -1,0 +1,10 @@
+{
+  "appId": "com.mobile.app",
+  "appName": "mobile template",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+  }
+}
+
+

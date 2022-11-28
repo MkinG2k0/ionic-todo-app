@@ -1,0 +1,16 @@
+{
+  "template": {
+    "slice": {
+      "folder": "./src/Redux/Slices",
+      "files": "./templates/slice/"
+    },
+    "comp": {
+      "folder": "./src/Components",
+      "files": "./templates/comp"
+    },
+    "page": {
+      "folder": "./src/Pages",
+      "files": "./templates/page/"
+    }
+  }
+}
