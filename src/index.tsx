@@ -1,3 +1,4 @@
+import { defineCustomElements } from '@ionic/pwa-elements/loader'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from 'Routes/App'
@@ -11,4 +12,5 @@ root.render(
 	</StrictMode>
 )
 
-serviceWorkerRegistration.unregister()
+// defineCustomElements(window)
+serviceWorkerRegistration.register()

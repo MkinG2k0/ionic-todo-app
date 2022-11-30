@@ -1,3 +1,4 @@
+import { GalleryPhoto } from '@capacitor/camera'
 import { OverlayEventDetail } from '@ionic/core/components'
 import {
 	IonButton,
@@ -6,6 +7,7 @@ import {
 	IonContent,
 	IonGrid,
 	IonHeader,
+	IonIcon,
 	IonInput,
 	IonItem,
 	IonLabel,
@@ -17,9 +19,13 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/react'
+import { SwiperMap } from 'Components/SwiperMap/SwiperMap'
+import { takePictures } from 'Helper/Camera'
+import { addOutline, apertureOutline } from 'ionicons/icons'
 import { observer } from 'mobx-react'
-import React, { useRef } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { app } from 'Store/App'
+import { IPhoto, photo, Photos } from 'Store/Photos'
 import { ICreateTodo } from 'Store/Todo'
 import { todos } from 'Store/Todos'
 
@@ -35,8 +41,10 @@ export const CreateTodoModal = observer(() => {
 
 	function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
 		if (ev.detail.role === 'confirm') {
-			app.toggleCreateModalTodo(false)
+			// app.toggleCreateModalTodo(false)
 		}
+		app.toggleCreateModalTodo(false)
+		photo.clear()
 	}
 
 	const onSubmit = (e) => {
@@ -44,9 +52,10 @@ export const CreateTodoModal = observer(() => {
 
 		// @ts-ignore
 		const data = Object.fromEntries([...new FormData(e.target)]) as ICreateTodo
-
+		data.images = photo.data
 		todos.create(data)
 		app.toggleCreateModalTodo(false)
+		photo.clear()
 	}
 
 	return (
@@ -77,6 +86,11 @@ export const CreateTodoModal = observer(() => {
 						<IonGrid>
 							<IonRow>
 								<IonCol>
+									<PhotoSlider />
+								</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol>
 									<IonItem>
 										<IonLabel position="stacked">Enter your title</IonLabel>
 										<IonInput
@@ -99,7 +113,7 @@ export const CreateTodoModal = observer(() => {
 										/>
 									</IonItem>
 								</IonCol>
-							</IonRow>{' '}
+							</IonRow>
 							<IonRow>
 								<IonCol>
 									<IonItem>
@@ -137,3 +151,38 @@ export const CreateTodoModal = observer(() => {
 		</>
 	)
 })
+
+const PhotoSlider = observer(({}) => {
+	return (
+		<div className={style.wrapSwiper}>
+			<SwiperMap data={[...photo.data, {}]} Component={Photo} />
+		</div>
+	)
+})
+
+const Photo: FC<IPhoto> = ({ webPath }) => {
+	if (webPath) {
+		return <img alt={'img'} src={webPath} className={style.wrapImg} />
+	}
+
+	return <AddPhoto />
+}
+
+const AddPhoto = ({}) => {
+	const onClick = () => {
+		takePictures().then((data) => {
+			photo.add(data)
+		})
+	}
+
+	return (
+		<div className={style.wrapAddImg} onClick={onClick}>
+			<div className={style.center}>
+				<div className={style.col}>
+					<IonIcon icon={addOutline} className={style.icon}></IonIcon>
+					<div>Add photo</div>
+				</div>
+			</div>
+		</div>
+	)
+}

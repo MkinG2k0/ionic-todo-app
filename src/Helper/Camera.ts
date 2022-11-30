@@ -1,10 +1,8 @@
 import { Camera, CameraResultType } from '@capacitor/camera'
 
-export const takePicture = async () => {
-	const image = await Camera.getPhoto({
-		quality: 90,
-		allowEditing: true,
-		resultType: CameraResultType.Uri
+export const takePictures = async () => {
+	const image = await Camera.pickImages({
+		quality: 100
 	})
 
 	// image.webPath will contain a path that can be set as an image src.
@@ -15,4 +13,5 @@ export const takePicture = async () => {
 
 	// Can be set to the src of an image now
 	// imageElement.src = imageUrl
+	return image.photos
 }

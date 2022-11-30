@@ -12,8 +12,8 @@ export class App {
 		this.load = value || !this.load
 	}
 
-	toggleCreateModalTodo(value?: boolean) {
-		this.createTodoModal = value || !this.createTodoModal
+	toggleCreateModalTodo(value: boolean) {
+		this.createTodoModal = value
 	}
 }
 

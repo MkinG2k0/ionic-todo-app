@@ -6,7 +6,9 @@ import {
 	IonCardTitle,
 	IonChip
 } from '@ionic/react'
-import { FC, useEffect, useState } from 'react'
+import { SwiperMap } from 'Components/SwiperMap/SwiperMap'
+import React, { FC, useEffect, useState } from 'react'
+import { IPhoto } from 'Store/Photos'
 import { ITodo } from 'Store/Todo'
 
 import style from './Todo.module.scss'
@@ -14,7 +16,7 @@ import style from './Todo.module.scss'
 export const Todo: FC<ITodo> = ({
 	title,
 	body,
-	img,
+	images,
 	id,
 	createAt,
 	finished,
@@ -32,11 +34,9 @@ export const Todo: FC<ITodo> = ({
 	return (
 		<IonCard>
 			<div className={style.wrapImg}>
-				<img
-					alt="Silhouette of mountains"
-					src="https://ionicframework.com/docs/img/demos/card-media.png"
-					className={style.img}
-				/>
+				<div className={style.wrapSwiper}>
+					<SwiperMap data={images} Component={Photo} />
+				</div>
 			</div>
 			<IonCardHeader>
 				<IonCardTitle>{title}</IonCardTitle>
@@ -53,6 +53,10 @@ export const Todo: FC<ITodo> = ({
 			<IonCardContent>{body}</IonCardContent>
 		</IonCard>
 	)
+}
+
+const Photo: FC<IPhoto> = ({ webPath }) => {
+	return <img alt={'img'} src={webPath} className={style.wrapImg} />
 }
 
 const dataChip = {

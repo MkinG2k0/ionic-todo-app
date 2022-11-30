@@ -1,15 +1,16 @@
 import { makeAutoObservable } from 'mobx'
+import { IPhoto } from 'Store/Photos'
 
 export interface ICreateTodo {
 	title: string
 	body: string
 	type: string
 	subTitle: string
+	images: IPhoto[]
 }
 
 export interface ITodo extends ICreateTodo {
 	createAt: string
-	img: string
 	finished: boolean
 	id: number
 }
@@ -22,14 +23,15 @@ export class Todo {
 	body = ''
 	createAt = new Date().toDateString()
 	finished = false
-	img: any[] = []
+	images: IPhoto[] = []
 
-	constructor({ subTitle, title, type, body }: ICreateTodo) {
+	constructor({ subTitle, title, type, body, images }: ICreateTodo) {
 		makeAutoObservable(this, {})
 		this.title = title
 		this.body = body
 		this.type = type
 		this.subTitle = subTitle
+		this.images = images
 	}
 
 	toggle() {

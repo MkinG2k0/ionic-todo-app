@@ -6,14 +6,10 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/react'
-import { takePicture } from 'Helper/Camera'
+import { takePictures } from 'Helper/Camera'
 import { useEffect } from 'react'
 
 function AnyPage() {
-	useEffect(() => {
-		takePicture()
-	}, [])
-
 	return (
 		<>
 			<IonHeader>

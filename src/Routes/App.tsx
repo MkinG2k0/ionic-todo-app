@@ -40,9 +40,5 @@ export function App() {
 }
 
 const Loader: FC = () => {
-	useEffect(() => {
-		console.time('load_start')
-	}, [])
-
 	return null
 }

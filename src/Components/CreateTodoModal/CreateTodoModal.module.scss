@@ -1,3 +1,43 @@
 .wrap {
 	height: 100%;
 }
+
+.wrapAddImg {
+	height: 10rem;
+	//width: 10rem;
+	border-radius: 1rem;
+	border: 2px solid #8b8b8b;
+	overflow: hidden;
+	display: flex;
+	cursor: pointer;
+
+	.center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex: 1 1;
+
+		.col {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			gap: .5rem;
+
+			.icon {
+				font-size: 2rem;
+			}
+		}
+	}
+}
+
+.wrapImg {
+	height: 10rem;
+	//width: 10rem;
+	border-radius: 1rem;
+	overflow: hidden;
+	display: flex;
+	cursor: pointer;
+
+}
+

@@ -13,11 +13,12 @@ import { Recorder } from 'Components/Recorder/Recorder'
 import { Segment } from 'Components/Segment/Segment'
 import { Select } from 'Components/Select/Select'
 import { Todo } from 'Components/Todo/Todo'
+import { takePictures } from 'Helper/Camera'
 import { globe } from 'ionicons/icons'
 import { autorun } from 'mobx'
 import { observer } from 'mobx-react'
 import AnyPage from 'Pages/AnyPage/AnyPage'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { app } from 'Store/App'
 import { todos } from 'Store/Todos'
 
@@ -25,9 +26,11 @@ const Main = observer(() => {
 	useEffect(() => {
 		app.toggleLoad(true)
 	}, [])
+
 	return (
 		<IonContent>
-			<Wrap /> <CreateTodoModal />
+			<Wrap />
+			<CreateTodoModal />
 			<Fab />
 		</IonContent>
 	)

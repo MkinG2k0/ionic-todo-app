@@ -12,24 +12,27 @@ import style from './SwiperMap.module.scss'
 interface SwiperMapProps {
 	data: any[]
 	Component: any
+	props?: object
+	onClick?: () => void
 }
 
-export const SwiperMap: FC<SwiperMapProps> = ({ data, Component }) => {
+export const SwiperMap: FC<SwiperMapProps> = ({
+	data,
+	Component,
+	props,
+	onClick
+}) => {
 	return (
 		<div className={style.wrap}>
 			<Swiper
-				modules={[Navigation, Pagination, Scrollbar, A11y]}
-				spaceBetween={50}
+				modules={[Scrollbar]}
+				spaceBetween={15}
 				slidesPerView={3}
-				navigation
-				pagination={{ clickable: true }}
 				scrollbar={{ draggable: true }}
-				onSwiper={(swiper) => console.log(swiper)}
-				onSlideChange={() => console.log('slide change')}
 			>
 				{data.map((item, index) => (
 					<SwiperSlide key={`slide-${index}`}>
-						<Component {...item} />
+						<Component {...item} {...props} />
 					</SwiperSlide>
 				))}
 			</Swiper>

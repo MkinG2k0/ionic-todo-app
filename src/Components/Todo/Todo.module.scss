@@ -5,6 +5,12 @@
 .wrapImg {
 	height: 10rem;
 	width: 100%;
+	display: flex;
+	object-fit: cover;
+
+	.wrapSwiper {
+		width: 100%;
+	}
 
 	.img {
 		height: 100%;
