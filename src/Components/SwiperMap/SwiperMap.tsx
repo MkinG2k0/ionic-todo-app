@@ -14,19 +14,21 @@ interface SwiperMapProps {
 	Component: any
 	props?: object
 	onClick?: () => void
+	spaceBetween?: number
 }
 
 export const SwiperMap: FC<SwiperMapProps> = ({
 	data,
 	Component,
 	props,
-	onClick
+	onClick,
+	spaceBetween
 }) => {
 	return (
 		<div className={style.wrap}>
 			<Swiper
 				modules={[Scrollbar]}
-				spaceBetween={15}
+				spaceBetween={spaceBetween}
 				slidesPerView={3}
 				scrollbar={{ draggable: true }}
 			>
@@ -38,4 +40,7 @@ export const SwiperMap: FC<SwiperMapProps> = ({
 			</Swiper>
 		</div>
 	)
+}
+SwiperMap.defaultProps = {
+	spaceBetween: 10
 }

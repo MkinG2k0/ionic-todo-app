@@ -23,16 +23,16 @@ export const Todo: FC<ITodo> = ({
 	type,
 	subTitle
 }) => {
-	const [subTitles, setSubTitles] = useState(subTitle.split(','))
+	const [subTitles, setSubTitles] = useState<string[]>([])
 
 	useEffect(() => {
-		setSubTitles(subTitle.split(','))
+		setSubTitles(subTitle ? subTitle.split(',') : [])
 	}, [id])
 
 	const CustomClick = () => {}
 
 	return (
-		<IonCard>
+		<IonCard className={style.wrap}>
 			<div className={style.wrapImg}>
 				<div className={style.wrapSwiper}>
 					<SwiperMap data={images} Component={Photo} />
@@ -53,6 +53,10 @@ export const Todo: FC<ITodo> = ({
 			<IonCardContent>{body}</IonCardContent>
 		</IonCard>
 	)
+}
+
+export const Remove = () => {
+	return <div className={style.remove}>X</div>
 }
 
 const Photo: FC<IPhoto> = ({ webPath }) => {

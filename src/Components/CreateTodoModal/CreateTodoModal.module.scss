@@ -5,11 +5,11 @@
 .wrapAddImg {
 	height: 10rem;
 	//width: 10rem;
-	border-radius: 1rem;
 	border: 2px solid #8b8b8b;
 	overflow: hidden;
 	display: flex;
 	cursor: pointer;
+	width: 100%;
 
 	.center {
 		display: flex;
@@ -34,10 +34,10 @@
 .wrapImg {
 	height: 10rem;
 	//width: 10rem;
-	border-radius: 1rem;
+	width: 100%;
 	overflow: hidden;
 	display: flex;
 	cursor: pointer;
-
+	object-fit: contain;
 }
 

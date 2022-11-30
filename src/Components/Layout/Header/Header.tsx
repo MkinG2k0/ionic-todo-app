@@ -7,13 +7,18 @@ import {
 import { observer } from 'mobx-react'
 import { FC } from 'react'
 import { app } from 'Store/App'
+import { todos } from 'Store/Todos'
 
 interface HeaderProps {}
 
 export const Header: FC<HeaderProps> = observer(({}) => {
 	const load = app.load
 
-	const onChange = () => {}
+	const onChange = (e) => {
+		const { value } = e.detail
+		todos.filter(value)
+	}
+
 	return (
 		<IonHeader>
 			{/*<IonToolbar>*/}
@@ -24,7 +29,7 @@ export const Header: FC<HeaderProps> = observer(({}) => {
 			{/*	</IonSegment>*/}
 			{/*</IonToolbar>*/}
 			<IonToolbar>
-				<IonSearchbar onChange={onChange}></IonSearchbar>
+				<IonSearchbar onIonChange={onChange}></IonSearchbar>
 				{!load && <IonProgressBar type="indeterminate"></IonProgressBar>}
 			</IonToolbar>
 		</IonHeader>

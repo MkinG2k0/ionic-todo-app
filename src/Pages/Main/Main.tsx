@@ -8,18 +8,19 @@ import {
 import { ActionBtn } from 'Components/ActionBtn/ActionBtn'
 import { CreateTodoModal } from 'Components/CreateTodoModal/CreateTodoModal'
 import { Fab } from 'Components/Fab/Fab'
-import { Map } from 'Components/Map/Map'
 import { Recorder } from 'Components/Recorder/Recorder'
 import { Segment } from 'Components/Segment/Segment'
 import { Select } from 'Components/Select/Select'
 import { Todo } from 'Components/Todo/Todo'
-import { takePictures } from 'Helper/Camera'
-import { globe } from 'ionicons/icons'
-import { autorun } from 'mobx'
+import { AnimatePresence, motion, Reorder, useMotionValue } from 'framer-motion'
+import { filterTodos } from 'Helper/Helper'
+import { useRaisedShadow } from 'Hook/use-raised-shadow'
+import { globe, trashOutline } from 'ionicons/icons'
 import { observer } from 'mobx-react'
 import AnyPage from 'Pages/AnyPage/AnyPage'
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { app } from 'Store/App'
+import { ITodo } from 'Store/Todo'
 import { todos } from 'Store/Todos'
 
 const Main = observer(() => {
@@ -37,46 +38,127 @@ const Main = observer(() => {
 })
 
 const Wrap = observer(() => {
-	return <Map Comp={Todo} data={todos.data} />
-})
+	const [arrTodos, setArrTodos] = useState<ITodo[]>([...todos.data])
 
-autorun(() => {
-	// console.log(todos.data, 'autorun')
-})
+	useEffect(() => {
+		const filtered = filterTodos([...todos.data], todos.textFilter)
 
-const A = () => {
-	const [present] = useIonToast()
+		setArrTodos(filtered)
+	}, [todos.data, todos.textFilter])
 
-	const presentToast = (position: 'top' | 'middle' | 'bottom') => {
-		present({
-			message: 'Hello World!',
-			duration: 1500,
-			position: position,
-			icon: globe
-		})
-	}
-
-	const openScanner = async () => {
-		// const data = await BarcodeScanner.scan()
-		// console.log(`Barcode data: ${data.text}`)
+	const onReorder = (data) => {
+		todos.setData(data)
+		setArrTodos(data)
 	}
 
 	return (
-		<>
-			<h1>Page One</h1>
-			<Segment />
-			<Select />
-			<Recorder />
-			<IonButton onClick={openScanner}>Scan barcode</IonButton>
-			<IonButton expand="block" onClick={() => presentToast('top')}>
-				Present Toast At the Top
-			</IonButton>
-			<IonNavLink routerDirection="forward" component={() => <AnyPage />}>
-				<IonButton>Go to Page Three</IonButton>
-			</IonNavLink>
-			<ActionBtn>Ok</ActionBtn>
-			<IonDatetime></IonDatetime>
-		</>
+		<AnimatePresence>
+			<Reorder.Group axis="y" values={arrTodos} onReorder={onReorder}>
+				{arrTodos.map((todo) => (
+					<ReorderTodo todo={todo} key={todo.id} />
+				))}
+			</Reorder.Group>
+		</AnimatePresence>
+	)
+
+	// return <Map Comp={Todo} data={todos.data} />
+})
+
+const ReorderTodo = observer(({ todo }) => {
+	const [double, setDouble] = useState(false)
+
+	const onDoubleClick = () => {
+		setDouble((prevState) => !prevState)
+	}
+
+	useEffect(() => {
+		// if (double) {
+		// 	todos.setDrag('x')
+		// } else {
+		// 	todos.setDrag('none')
+		// }
+	}, [double])
+
+	if (todos.drag === 'x') {
+		return (
+			<DragTodoX todo={todo}>
+				<motion.div onDoubleClick={onDoubleClick}>
+					<Todo {...todo} />
+				</motion.div>
+			</DragTodoX>
+		)
+	}
+
+	if (todos.drag === 'y') {
+		return (
+			<DragTodoY todo={todo}>
+				<motion.div onDoubleClick={onDoubleClick}>
+					<Todo {...todo} />
+				</motion.div>
+			</DragTodoY>
+		)
+	}
+
+	return (
+		<motion.div onDoubleClick={onDoubleClick}>
+			<Todo {...todo} />
+		</motion.div>
+	)
+})
+
+const DragTodoY: FC<DragTodoX> = ({ todo, children }) => {
+	const y = useMotionValue(0)
+	const boxShadow = useRaisedShadow(y)
+
+	const onDrag = (e) => {
+		e.target.style.zIndex = 10000
+	}
+
+	return (
+		<Reorder.Item
+			key={todo.id}
+			value={todo}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			style={{ boxShadow, y }}
+			onDrag={onDrag}
+		>
+			{children}
+			{/*{double && <Remove/>}*/}
+		</Reorder.Item>
+	)
+}
+
+interface DragTodoX {
+	todo: ITodo
+}
+
+const DragTodoX: FC<DragTodoX> = ({ children, todo }) => {
+	const [present] = useIonToast()
+
+	const onRemove = (e) => {
+		if (e.x < 400) {
+			present({
+				message: `Deleted ${todo.title}`,
+				duration: 2500,
+				position: 'top',
+				icon: trashOutline
+			})
+			todos.remove(todo.id)
+		}
+	}
+
+	return (
+		<motion.div
+			drag="x"
+			dragConstraints={{ left: -160, right: 0 }}
+			dragElastic={0.2}
+			onDragEnd={onRemove}
+			dragTransition={{ bounceStiffness: 600, bounceDamping: 10 }}
+		>
+			{children}
+		</motion.div>
 	)
 }
 

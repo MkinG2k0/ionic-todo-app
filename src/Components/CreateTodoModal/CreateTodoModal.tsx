@@ -53,6 +53,7 @@ export const CreateTodoModal = observer(() => {
 		// @ts-ignore
 		const data = Object.fromEntries([...new FormData(e.target)]) as ICreateTodo
 		data.images = photo.data
+		// console.log(photo.data)
 		todos.create(data)
 		app.toggleCreateModalTodo(false)
 		photo.clear()

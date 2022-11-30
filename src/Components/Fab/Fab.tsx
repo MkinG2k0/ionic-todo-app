@@ -1,36 +1,77 @@
-import { IonFab, IonFabButton, IonFabList, IonIcon } from '@ionic/react'
 import {
-	addCircleOutline,
-	apertureOutline,
-	bookmarkOutline,
-	bulbOutline
+	IonFab,
+	IonFabButton,
+	IonFabList,
+	IonIcon,
+	useIonToast
+} from '@ionic/react'
+import {
+	addOutline,
+	checkmarkOutline,
+	codeOutline,
+	filterOutline,
+	logoBuffer,
+	swapHorizontalOutline,
+	swapVerticalOutline
 } from 'ionicons/icons'
 import { observer } from 'mobx-react'
 import { FC } from 'react'
 import { app } from 'Store/App'
+import { todos } from 'Store/Todos'
 
 interface FabProps {}
 
 export const Fab: FC<FabProps> = observer(({}) => {
+	const [present] = useIonToast()
+
 	const onAdd = () => {
-		// todos.create({ title: 'ok', body: 'body' })
 		app.toggleCreateModalTodo(true)
+	}
+
+	const onMoveX = () => {
+		todos.setDrag('x')
+		present({
+			message: `drag todos and horizontal scroll for deleted`,
+			position: 'top',
+			duration: 4000,
+			icon: swapHorizontalOutline
+		})
+	}
+	const onMoveY = () => {
+		todos.setDrag('y')
+		present({
+			message: `drag todos and verticals scroll for sorted`,
+			position: 'top',
+			duration: 4000,
+			icon: swapVerticalOutline
+		})
+	}
+
+	const onClearDrag = () => {
+		todos.setDrag('none')
 	}
 
 	return (
 		<IonFab slot="fixed" vertical="bottom" horizontal="end">
-			<IonFabButton>
-				<IonIcon icon={addCircleOutline}></IonIcon>
-			</IonFabButton>
+			{todos.drag !== 'none' ? (
+				<IonFabButton>
+					<IonIcon icon={checkmarkOutline} onClick={onClearDrag}></IonIcon>
+				</IonFabButton>
+			) : (
+				<IonFabButton>
+					<IonIcon icon={logoBuffer} onClick={onClearDrag}></IonIcon>
+				</IonFabButton>
+			)}
+
 			<IonFabList side="top">
-				<IonFabButton onClick={onAdd}>
-					<IonIcon icon={apertureOutline}></IonIcon>
+				<IonFabButton onClick={onMoveY}>
+					<IonIcon icon={filterOutline}></IonIcon>
+				</IonFabButton>
+				<IonFabButton onClick={onMoveX}>
+					<IonIcon icon={codeOutline}></IonIcon>
 				</IonFabButton>
 				<IonFabButton onClick={onAdd}>
-					<IonIcon icon={bulbOutline}></IonIcon>
-				</IonFabButton>
-				<IonFabButton onClick={onAdd}>
-					<IonIcon icon={bookmarkOutline}></IonIcon>
+					<IonIcon icon={addOutline}></IonIcon>
 				</IonFabButton>
 			</IonFabList>
 		</IonFab>
