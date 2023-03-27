@@ -47,6 +47,7 @@ const Wrap = observer(() => {
 	}, [todos.data, todos.textFilter])
 
 	const onReorder = (data) => {
+		console.log(data)
 		todos.setData(data)
 		setArrTodos(data)
 	}

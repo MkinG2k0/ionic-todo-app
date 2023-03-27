@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { autorun, makeAutoObservable } from 'mobx'
 import { IPhoto } from 'Store/Photos'
 
 export interface ICreateTodo {
@@ -36,6 +36,7 @@ export class Todo {
 
 	toggle() {
 		this.finished = !this.finished
+
 		return this.finished
 	}
 }
